@@ -1,0 +1,4 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="f_loadmore_tv_textsize">14sp</dimen>
+</resources>
