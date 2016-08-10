@@ -61,7 +61,7 @@ public class FRecyclerView extends FrameLayout{
     private OnRefreshListener mRefreshListener;
 
     /**
-     * 最后一个的位置
+     * the position of lastvisible item
      */
     private int[] mLastPositions;
 
@@ -177,7 +177,7 @@ public class FRecyclerView extends FrameLayout{
     }
 
     /**
-     * 取数组中最大值
+     * get max from array
      *
      * @param lastPositions
      * @return
@@ -194,7 +194,7 @@ public class FRecyclerView extends FrameLayout{
     }
 
     /**
-     * 取数组中最小值
+     * get min from array
      *
      * @param lastPositions
      * @return

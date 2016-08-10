@@ -48,11 +48,10 @@ public class ExStaggeredGridLayoutManager extends StaggeredGridLayoutManager {
             if (mSpanSizeLookup.getSpanSize(i) > 1) {
                 //Log.d(TAG, "lookup > 1 = " + i);
                 try {
-                    //fix 动态添加时报IndexOutOfBoundsException
+                    //fix throw IndexOutOfBoundsException when add by code
                     View view = recycler.getViewForPosition(i);
                     if (view != null) {
                         /**
-                         *占用所有的列
                          * @see https://plus.google.com/+EtienneLawlor/posts/c5T7fu9ujqi
                          */
                         StaggeredGridLayoutManager.LayoutParams lp = (StaggeredGridLayoutManager.LayoutParams) view.getLayoutParams();
