@@ -76,15 +76,15 @@ public class LoadMoreView extends LinearLayout{
         if(state == LOADSTATE_LOADING)
         {
             mProgressBar.setVisibility(View.VISIBLE);
-            mTv.setText("更多数据加载中...");
+            mTv.setText(R.string.moredata_loading);
         } else if(state == LOADSTATE_ERROR)
         {
             mProgressBar.setVisibility(View.GONE);
-            mTv.setText("加载出错,点击重试");
+            mTv.setText(R.string.loaderror_try);
         } else if(state == LOADSTATE_END)
         {
             mProgressBar.setVisibility(View.GONE);
-            mTv.setText("已经到底了!");
+            mTv.setText(R.string.loadmore_no);
         }
     }
 
