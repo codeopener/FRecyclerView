@@ -47,6 +47,7 @@ public class LoadMoreView extends LinearLayout{
         View v = LayoutInflater.from(getContext()).inflate(R.layout.f_loadmoreview, this, true);
         mProgressBar = (ProgressBar) findViewById(R.id.pb);
         mTv = (TextView) findViewById(R.id.tv);
+        setVisibility(View.GONE);
 
         v.setOnClickListener(new OnClickListener() {
             @Override

@@ -125,15 +125,27 @@ public class FRecyclerView extends FrameLayout{
                     {
                         if(((LinearLayoutManager)manager).findLastVisibleItemPosition() == (recyclerView.getAdapter().getItemCount() - 1))
                         {
-                            Log.i("FRecyclerView", "onLoadMore");
-                            loadMore();
+                            if(((LinearLayoutManager)manager).findFirstVisibleItemPosition() != 0)
+                            {
+                                Log.i("FRecyclerView", "onLoadMore");
+                                loadMore();
+                            }else
+                            {
+                                mLoadMoreView.setVisibility(View.GONE);
+                            }
                         }
                     } else if(manager instanceof GridLayoutManager)
                     {
                         if(((GridLayoutManager)manager).findLastVisibleItemPosition() == (recyclerView.getAdapter().getItemCount() - 1))
                         {
-                            Log.i("FRecyclerView", "onLoadMore");
-                            loadMore();
+                            if(((GridLayoutManager)manager).findFirstVisibleItemPosition() != 0)
+                            {
+                                Log.i("FRecyclerView", "onLoadMore");
+                                loadMore();
+                            }else
+                            {
+                                mLoadMoreView.setVisibility(View.GONE);
+                            }
                         }
                     } else if(manager instanceof ExStaggeredGridLayoutManager)
                     {
@@ -145,8 +157,14 @@ public class FRecyclerView extends FrameLayout{
                         exManager.findLastVisibleItemPositions(mLastPositions);
                         if(findMax(mLastPositions) == (recyclerView.getAdapter().getItemCount() - 1))
                         {
-                            Log.i("FRecyclerView", "onLoadMore");
-                            loadMore();
+                            if(findMin(mLastPositions) != 0)
+                            {
+                                Log.i("FRecyclerView", "onLoadMore");
+                                loadMore();
+                            } else
+                            {
+                                mLoadMoreView.setVisibility(View.GONE);
+                            }
                         }
                     }
 
@@ -173,6 +191,23 @@ public class FRecyclerView extends FrameLayout{
         }
 
         return max;
+    }
+
+    /**
+     * 取数组中最小值
+     *
+     * @param lastPositions
+     * @return
+     */
+    private int findMin(int[] lastPositions) {
+        int min = lastPositions[0];
+        for (int value : lastPositions) {
+            if (value < min) {
+                min = value;
+            }
+        }
+
+        return min;
     }
 
     private void addHeader()
@@ -513,6 +548,7 @@ public class FRecyclerView extends FrameLayout{
         {
             return;
         }
+        mLoadMoreView.setVisibility(View.VISIBLE);
         if(mLoadMoreListener != null)
         {
             mLoadMoreListener.onLoadMore();
