@@ -123,30 +123,27 @@ public class FRecyclerView extends FrameLayout{
                     RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
                     if(manager instanceof LinearLayoutManager)
                     {
-                        if(((LinearLayoutManager)manager).findLastVisibleItemPosition() == (recyclerView.getAdapter().getItemCount() - 1))
+                        if(((LinearLayoutManager)manager).findFirstVisibleItemPosition() == 0&&((LinearLayoutManager)manager).findLastVisibleItemPosition() == (recyclerView.getAdapter().getItemCount() - 1))
                         {
-                            if(((LinearLayoutManager)manager).findFirstVisibleItemPosition() != 0)
-                            {
-                                Log.i("FRecyclerView", "onLoadMore");
-                                loadMore();
-                            }else
-                            {
-                                mLoadMoreView.setVisibility(View.GONE);
-                            }
+                            mLoadMoreView.setVisibility(View.GONE);
+                        }
+                        else
+                        {
+                            Log.i("FRecyclerView", "onLoadMore");
+                            loadMore();
                         }
                     } else if(manager instanceof GridLayoutManager)
                     {
-                        if(((GridLayoutManager)manager).findLastVisibleItemPosition() == (recyclerView.getAdapter().getItemCount() - 1))
+                        if(((LinearLayoutManager)manager).findFirstVisibleItemPosition() == 0&&((LinearLayoutManager)manager).findLastVisibleItemPosition() == (recyclerView.getAdapter().getItemCount() - 1))
                         {
-                            if(((GridLayoutManager)manager).findFirstVisibleItemPosition() != 0)
-                            {
-                                Log.i("FRecyclerView", "onLoadMore");
-                                loadMore();
-                            }else
-                            {
-                                mLoadMoreView.setVisibility(View.GONE);
-                            }
+                            mLoadMoreView.setVisibility(View.GONE);
                         }
+                        else
+                        {
+                            Log.i("FRecyclerView", "onLoadMore");
+                            loadMore();
+                        }
+
                     } else if(manager instanceof ExStaggeredGridLayoutManager)
                     {
                         ExStaggeredGridLayoutManager exManager = (ExStaggeredGridLayoutManager) manager;
@@ -155,23 +152,20 @@ public class FRecyclerView extends FrameLayout{
                             mLastPositions = new int[exManager.getSpanCount()];
                         }
                         exManager.findLastVisibleItemPositions(mLastPositions);
-                        if(findMax(mLastPositions) == (recyclerView.getAdapter().getItemCount() - 1))
+                        if(findMin(mLastPositions) == 0&&findMax(mLastPositions) == (recyclerView.getAdapter().getItemCount() - 1))
                         {
-                            if(findMin(mLastPositions) != 0)
-                            {
-                                Log.i("FRecyclerView", "onLoadMore");
-                                loadMore();
-                            } else
-                            {
-                                mLoadMoreView.setVisibility(View.GONE);
-                            }
+                            mLoadMoreView.setVisibility(View.GONE);
+                        }
+                        else
+                        {
+                            Log.i("FRecyclerView", "onLoadMore");
+                            loadMore();
                         }
                     }
 
                 }
             }
         });
-
         mAdapter = new FAdapter();
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -359,7 +353,7 @@ public class FRecyclerView extends FrameLayout{
             {
                 if(mHeader == null)
                 {
-                    Log.i("FRecyclerView", "aaaaa");
+                    Log.i("FRecyclerView", "add mHeader");
                     mHeader = new HeaderFooterHolder(parent, 0);
                     mHeader.addView(mHeaders);
                 }
@@ -368,7 +362,7 @@ public class FRecyclerView extends FrameLayout{
             {
                 if(mFooter == null)
                 {
-                    Log.i("FRecyclerView", "bbbbbb");
+                    Log.i("FRecyclerView", "add mfooter");
                     mFooter = new HeaderFooterHolder(parent, 0);
                     mFooter.addView(mFooters);
                 }
@@ -423,14 +417,14 @@ public class FRecyclerView extends FrameLayout{
         return mAdapter;
     }
 
-    private FViewHolder createHolder(ViewGroup parent, int viewType)
+    private <T extends FViewHolder> T createHolder(ViewGroup parent, int viewType)
     {
             try {
                 Log.i("mClasses",mClasses.get(viewType).getName());
                 Class cl = Class.forName(mClasses.get(viewType).getName());
                 Constructor constructor = cl.getDeclaredConstructor(new Class[]{ViewGroup.class, Integer.class});
                 Object ob = constructor.newInstance(new Object[]{parent, 0});
-                return (FViewHolder<?>) ob;
+                return (T) ob;
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             } catch (NoSuchMethodException e) {
@@ -503,19 +497,6 @@ public class FRecyclerView extends FrameLayout{
         return typeId;
     }
 
-    private <T> T classNew(Class<T> cls)
-    {
-        try
-        {
-            T t = cls.newInstance();
-            return t;
-        }
-        catch(Exception e)
-        {
-            return null;
-        }
-    }
-
     public interface OnRefreshListener
     {
         void onRefresh();
@@ -539,6 +520,7 @@ public class FRecyclerView extends FrameLayout{
                 }
             });
         }
+        mLoadMoreView.setVisibility(GONE);
         addFooterView(mLoadMoreView, mFooters.size());
     }
 
@@ -560,6 +542,4 @@ public class FRecyclerView extends FrameLayout{
     {
         mLoadMoreView.setState(state, mAdapter.getItemCount());
     }
-
-
 }

@@ -48,7 +48,7 @@ public class ListViewActivity extends AppCompatActivity{
                     @Override
                     public void run() {
                         recyclerView.dataClear();
-                        initData(20);
+                        initData(3);
                         recyclerView.dataCommit();
                         recyclerView.setRefreshComplete();
                     }
@@ -78,7 +78,7 @@ public class ListViewActivity extends AppCompatActivity{
                 },1000);
             }
         },20);
-        initData(20);
+        initData(3);
         recyclerView.dataCommit();
     }
 
